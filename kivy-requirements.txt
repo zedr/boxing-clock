@@ -1,0 +1,3 @@
+Cython
+http://www.pygame.org/ftp/pygame-1.9.1release.tar.gz
+Pillow
