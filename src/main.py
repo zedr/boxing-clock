@@ -1,10 +1,13 @@
-from cerebellum.apps.kivy import KivyApp
-from cerebellum.config import configure_kivy
+from kivy.app import App
+from kivy.uix.label import Label
 
+
+class MyApp(App):
+    def build(self):
+        return Label(text=u"Hello world")
 
 def main():
-    configure_kivy()
-    KivyApp().run()
+    MyApp().run()
 
 
 if __name__ == "__main__":

@@ -24,6 +24,9 @@ install-deps: env ${kivy}
 install: install-deps
 	${virtualenv} pip install -e .
 
+app:
+	${virtualenv} python src/main.py
+
 android:
 	${virtualenv} buildozer -v android debug deploy run
 
