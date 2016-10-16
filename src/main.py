@@ -20,20 +20,26 @@ class TimerButton(Button):
     """The main clickable button.
     """
     default_round_duration = 180
+    default_warmup_duration = 10
     formatted_time = StringProperty()
     clock_state = BooleanProperty()
     round_time = NumericProperty()
+    warmup_time = NumericProperty()
 
     def __init__(self):
         super(TimerButton, self).__init__()
-        self._init_round_time()
+        self._init_time()
         self.clock_state = states.PAUSED
         Clock.schedule_interval(lambda event: self.update(), 1)
 
-    def _init_round_time(self):
+    def _init_time(self):
         self.round_time = self.default_round_duration
+        self.warmup_time = self.default_warmup_duration
 
     def on_round_time(self, widget, value):
+        self.formatted_time = format_time(value)
+
+    def on_warmup_time(self, widget, value):
         self.formatted_time = format_time(value)
 
     def on_clock_state(self, widget, value):
@@ -44,10 +50,13 @@ class TimerButton(Button):
 
     def update(self):
         if self.clock_state == states.RUNNING:
-            if self.round_time > 0:
+            if self.warmup_time:
+                self.warmup_time -= 1
+            elif self.round_time:
                 self.round_time -= 1
             else:
-                self._init_round_time()
+                self._init_time()
+
 
     def toggle(self):
         self.clock_state ^= 1
