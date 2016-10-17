@@ -1,3 +1,4 @@
 Cython==0.23
 Pillow
+python-for-android
 #hg+http://bitbucket.org/pygame/pygame

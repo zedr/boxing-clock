@@ -3,6 +3,7 @@ python_cmd=python${python_version}
 venv_cmd=virtualenv -p ${python_cmd}
 virtualenv=. env/bin/activate;
 kivy=env/lib/python${python_version}/site-packages/kivy
+PYTHONPATH=.buildozer/applibs
 
 default: install dev-deps
 
@@ -24,10 +25,10 @@ install-deps: env ${kivy}
 install: install-deps
 	${virtualenv} pip install -e .
 
-app:
+app: env
 	${virtualenv} python src/main.py
 
-android:
+android: env
 	${virtualenv} buildozer -v android debug deploy run
 
 lint:
@@ -35,3 +36,4 @@ lint:
 
 clean:
 	@rm -rf env
+	@rm -rf .buildozer
