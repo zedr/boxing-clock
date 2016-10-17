@@ -44,7 +44,7 @@ setup(
     packages=find_packages("src"),
     package_dir={'': 'src'},
 
-    install_requires=['kivy==1.9.1'],
+    install_requires=['kivy==1.9.1', 'jnius'],
 
     # package_data={
     #    'sample': ['package_data.dat'],

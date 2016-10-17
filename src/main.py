@@ -1,6 +1,7 @@
 import logging
 
 from kivy.app import App
+from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
 from kivy.uix.button import Button
 from kivy.properties import StringProperty, BooleanProperty, NumericProperty
@@ -12,15 +13,27 @@ logging.basicConfig(level=logging.INFO)
 
 
 def format_time(seconds, color=Colors.WHITE):
-    return "[color={0}]{1}:{2:02d}[/color]".format(color, seconds // 60,
-                                                   seconds % 60)
+    return "[color={0}]{1}:{2:02d}[/color]".format(
+        color,
+        seconds // 60,
+        seconds % 60
+    )
+
+
+def bell_enabled(method):
+    def inner(self, widget, value):
+        if value == 0:
+            self.bell_sound.play()
+        return method(self, widget, value)
+
+    return inner
 
 
 class TimerButton(Button):
     """The main clickable button.
     """
     markup = True
-    default_round_duration = 15
+    default_round_duration = 60 * 3
     default_warmup_duration = 10
     default_cooldown_duration = 30
     formatted_time = StringProperty()
@@ -28,10 +41,13 @@ class TimerButton(Button):
     round_time = NumericProperty()
     warmup_time = NumericProperty()
     cooldown_time = NumericProperty()
+    bell_sound_name = "bell.wav"
+    font_name = "digi.ttf"
 
     def __init__(self):
         super(TimerButton, self).__init__()
         self._init_time()
+        self.bell_sound = SoundLoader.load(self.bell_sound_name)
         self.clock_state = States.PAUSED
         Clock.schedule_interval(lambda event: self.update(), 1)
 
@@ -41,15 +57,18 @@ class TimerButton(Button):
         self.cooldown_time = self.default_cooldown_duration
         self.round_time = self.default_round_duration
 
+    @bell_enabled
     def on_round_time(self, widget, value):
         self.formatted_time = format_time(
             value,
             color=Colors.WHITE if value > 10 else Colors.RED
         )
 
+    @bell_enabled
     def on_warmup_time(self, widget, value):
         self.formatted_time = format_time(value, color=Colors.YELLOW)
 
+    @bell_enabled
     def on_cooldown_time(self, widget, value):
         self.formatted_time = format_time(
             value,
@@ -80,6 +99,12 @@ class TimerButton(Button):
 class BoxingApp(App):
     def build(self):
         return TimerButton()
+
+    def on_start(self):
+        pass
+
+    def on_pause(self):
+        return True
 
 
 def main():

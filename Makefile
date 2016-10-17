@@ -1,6 +1,6 @@
-python_version=3.5
-venv_cmd=pyvenv-${python_version}
+python_version=2.7
 python_cmd=python${python_version}
+venv_cmd=virtualenv -p ${python_cmd}
 virtualenv=. env/bin/activate;
 kivy=env/lib/python${python_version}/site-packages/kivy
 
