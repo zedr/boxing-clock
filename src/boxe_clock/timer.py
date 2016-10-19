@@ -1,7 +1,7 @@
-from kivy.properties import BooleanProperty, NumericProperty
-from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
 from kivy.uix.button import Button
+from kivy.core.audio import SoundLoader
+from kivy.properties import BooleanProperty, NumericProperty
 
 from boxe_clock.constants import States, Colors
 from boxe_clock.utils import format_time
