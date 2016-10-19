@@ -6,6 +6,8 @@ from kivy.uix.button import Button
 from boxe_clock.constants import States, Colors
 from boxe_clock.utils import format_time
 from boxe_clock.decorators import bell_enabled
+from boxe_clock.platform.android import actions
+from boxe_clock import config
 
 
 class TimerButton(Button):
@@ -20,21 +22,39 @@ class TimerButton(Button):
     round_time = NumericProperty()
     warmup_time = NumericProperty()
     cooldown_time = NumericProperty()
-    bell_sound_name = "boxe_clock/static/sounds/bell.wav"
-    font_name = "boxe_clock/static/fonts/digi.ttf"
+    bell_sound_name = config.audio("bell.wav")
+    font_name = config.fonts("digi.ttf")
 
     def __init__(self):
         super(TimerButton, self).__init__()
-        self._init_time()
+        self.reset()
         self.bell_sound = SoundLoader.load(self.bell_sound_name)
-        self.clock_state = States.PAUSED
         Clock.schedule_interval(lambda event: self.update(), 1)
+        self.bind(
+            on_touch_down=self._set_hold_event,
+            on_touch_up=self._unset_hold_event,
+        )
+
+    def _set_hold_event(self, *args):
+        self._hold_event = Clock.schedule_once(
+            lambda event: self.reset(vibrate=True),
+            1
+        )
+
+    def _unset_hold_event(self, *args):
+        Clock.unschedule(self._hold_event)
 
     def _init_time(self, include_warmup=True):
         if include_warmup:
             self.warmup_time = self.default_warmup_duration
         self.cooldown_time = self.default_cooldown_duration
         self.round_time = self.default_round_duration
+
+    def reset(self, vibrate=False):
+        if vibrate:
+            actions.vibrate()
+        self._init_time()
+        self.clock_state = States.PAUSED
 
     @bell_enabled
     def on_round_time(self, widget, value):

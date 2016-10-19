@@ -1,12 +1,8 @@
-from jnius import autoclass
-
+# noinspection PyUnresolvedReferences
 from android.runnable import run_on_ui_thread
 
+from boxe_clock.platform.android import java
 from boxe_clock.apps.generic import BoxingApp
-
-PythonActivity = autoclass('org.renpy.android.PythonActivity')
-Params = autoclass('android.view.WindowManager$LayoutParams')
-View = autoclass('android.view.View')
 
 
 class AndroidBoxingApp(BoxingApp):
@@ -15,16 +11,18 @@ class AndroidBoxingApp(BoxingApp):
 
     @run_on_ui_thread
     def keep_screen_on(self):
-        PythonActivity.mActivity.getWindow().addFlags(
-            Params.FLAG_KEEP_SCREEN_ON
+        java.PythonActivity.mActivity.getWindow().addFlags(
+            java.Params.FLAG_KEEP_SCREEN_ON
         )
 
     @run_on_ui_thread
     def set_systemui_visibility(self, options):
-        PythonActivity.mActivity.getWindow().getDecorView().setSystemUiVisibility(options)
+        view = java.PythonActivity.mActivity.getWindow().getDecorView()
+        view.setSystemUiVisibility(options)
 
+    @run_on_ui_thread
     def dim(self, *args):
-        self.set_systemui_visibility(View.SYSTEM_UI_FLAG_LOW_PROFILE)
+        self.set_systemui_visibility(java.View.SYSTEM_UI_FLAG_LOW_PROFILE)
 
     def on_start(self):
         super(AndroidBoxingApp, self).on_start()
