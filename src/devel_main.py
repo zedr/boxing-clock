@@ -1,4 +1,4 @@
-from boxe_clock.apps.generic import BoxingApp
+from boxe_clock.apps.devel_app import BoxingApp
 
 
 def main():

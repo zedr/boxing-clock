@@ -1,14 +1,14 @@
 from kivy.app import App
 
-from boxe_clock.timer import TimerButton
+from boxe_clock.screens import TimerScreenManager
 from boxe_clock.config import KIVY_TEMPLATES_PATH
 
 
-class BoxingApp(App):
+class BaseBoxingApp(App):
     kv_directory = KIVY_TEMPLATES_PATH
 
     def build(self):
-        return TimerButton()
+        return TimerScreenManager()
 
     def on_start(self):
         pass

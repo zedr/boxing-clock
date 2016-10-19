@@ -1,4 +1,4 @@
-from kivy.properties import StringProperty, BooleanProperty, NumericProperty
+from kivy.properties import BooleanProperty, NumericProperty
 from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
 from kivy.uix.button import Button
@@ -17,13 +17,13 @@ class TimerButton(Button):
     default_round_duration = 60 * 3
     default_warmup_duration = 10
     default_cooldown_duration = 30
-    formatted_time = StringProperty()
     clock_state = BooleanProperty()
     round_time = NumericProperty()
     warmup_time = NumericProperty()
     cooldown_time = NumericProperty()
     bell_sound_name = config.audio("bell.wav")
     font_name = config.fonts("digi.ttf")
+    font_size = 480
 
     def __init__(self):
         super(TimerButton, self).__init__()
@@ -58,18 +58,18 @@ class TimerButton(Button):
 
     @bell_enabled
     def on_round_time(self, widget, value):
-        self.formatted_time = format_time(
+        self.text = format_time(
             value,
             color=Colors.WHITE if value > 10 else Colors.RED
         )
 
     @bell_enabled
     def on_warmup_time(self, widget, value):
-        self.formatted_time = format_time(value, color=Colors.YELLOW)
+        self.text = format_time(value, color=Colors.YELLOW)
 
     @bell_enabled
     def on_cooldown_time(self, widget, value):
-        self.formatted_time = format_time(
+        self.text = format_time(
             value,
             color=Colors.GREEN if value > 10 else Colors.YELLOW
         )
@@ -79,6 +79,9 @@ class TimerButton(Button):
             self.background_color = 0, 0, 0, 0
         else:
             self.background_color = 1, 1, 1, 1
+
+    def on_press(self):
+        self.toggle()
 
     def update(self):
         if self.clock_state == States.RUNNING:

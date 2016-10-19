@@ -2,10 +2,10 @@
 from android.runnable import run_on_ui_thread
 
 from boxe_clock.platform.android import java
-from boxe_clock.apps.generic import BoxingApp
+from boxe_clock.apps.base import BaseBoxingApp
 
 
-class AndroidBoxingApp(BoxingApp):
+class BoxingApp(BaseBoxingApp):
     """The boxing app for Android devices.
     """
 
@@ -25,6 +25,6 @@ class AndroidBoxingApp(BoxingApp):
         self.set_systemui_visibility(java.View.SYSTEM_UI_FLAG_LOW_PROFILE)
 
     def on_start(self):
-        super(AndroidBoxingApp, self).on_start()
+        super(BoxingApp, self).on_start()
         self.keep_screen_on()
         self.dim()
