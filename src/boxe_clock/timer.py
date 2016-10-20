@@ -1,13 +1,20 @@
 from kivy.clock import Clock
 from kivy.uix.button import Button
-from kivy.core.audio import SoundLoader
 from kivy.properties import BooleanProperty, NumericProperty
 
 from boxe_clock.constants import States, Colors
 from boxe_clock.utils import format_time
-from boxe_clock.decorators import bell_enabled
 from boxe_clock.platform.android import actions
-from boxe_clock import config
+from boxe_clock.config import TimerConfig
+
+
+def _bell_enabled(method):
+    def inner(self, widget, value):
+        if value == 0:
+            self.config.bell_sound.play()
+        return method(self, widget, value)
+
+    return inner
 
 
 class TimerButton(Button):
@@ -21,14 +28,13 @@ class TimerButton(Button):
     round_time = NumericProperty()
     warmup_time = NumericProperty()
     cooldown_time = NumericProperty()
-    bell_sound_name = config.audio("bell.wav")
-    font_name = config.fonts("digi.ttf")
+    font_name = TimerConfig.fonts("Digital")
     font_size = 480
 
-    def __init__(self):
+    def __init__(self, config=None):
         super(TimerButton, self).__init__()
+        self.config = config or TimerConfig()
         self.reset()
-        self.bell_sound = SoundLoader.load(self.bell_sound_name)
         Clock.schedule_interval(lambda event: self.update(), 1)
         self.bind(
             on_touch_down=self._set_hold_event,
@@ -56,18 +62,18 @@ class TimerButton(Button):
         self._init_time()
         self.clock_state = States.PAUSED
 
-    @bell_enabled
+    @_bell_enabled
     def on_round_time(self, widget, value):
         self.text = format_time(
             value,
             color=Colors.WHITE if value > 10 else Colors.RED
         )
 
-    @bell_enabled
+    @_bell_enabled
     def on_warmup_time(self, widget, value):
         self.text = format_time(value, color=Colors.YELLOW)
 
-    @bell_enabled
+    @_bell_enabled
     def on_cooldown_time(self, widget, value):
         self.text = format_time(
             value,
