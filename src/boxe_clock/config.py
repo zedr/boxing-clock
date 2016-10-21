@@ -1,4 +1,5 @@
 import os
+from collections import deque, namedtuple
 
 from kivy.core.audio import SoundLoader
 
@@ -11,26 +12,51 @@ KIVY_TEMPLATES_PATH = os.path.join(KIVY_STATIC_PATH, "templates")
 KIVY_SOUNDS_PATH = os.path.join(KIVY_STATIC_PATH, "sounds")
 KIVY_FONTS_PATH = os.path.join(KIVY_STATIC_PATH, "fonts")
 
-TIMER_BELL_SOUNDS = ("Digital timer", "Ringside bell")
-
 TIMER_DEFAULTS = {
     "round_duration": 60 * 3,
     "warmup_duration": 10,
     "cooldown_duration": 30,
 }
 
+Sound = namedtuple("Sound", ("name", "sound"))
+
+
+def _load_current_sound(cls_method):
+    def _inner(self, *args, **kwargs):
+        try:
+            return cls_method(self, *args, **kwargs)
+        finally:
+            name = self[0]
+            path = os.path.join(KIVY_SOUNDS_PATH, utils.slugify(name) + ".wav")
+            self.current = Sound(name, SoundLoader.load(path))
+
+    return _inner
+
+
+class SoundDeque(deque):
+    """A collection that rotates and loads playable sounds.
+    """
+
+    @_load_current_sound
+    def __init__(self, *args):
+        super(SoundDeque, self).__init__(*args)
+
+    @_load_current_sound
+    def rotate(self, *args, **kwargs):
+        super(SoundDeque, self).rotate(*args, **kwargs)
+
 
 class TimerConfig(object):
     """A configuration namespace for Timers.
     """
-    available_bell_sound_names = TIMER_BELL_SOUNDS
+    available_bells = ("Digital timer", "Ringside bell")
 
     def __init__(self, **kwargs):
         ns = {}
         ns.update(TIMER_DEFAULTS)
         ns.update(kwargs)
         self._namespace = ns
-        self.bell_sound_name = self.available_bell_sound_names[0]
+        self.bells = SoundDeque(self.available_bells)
 
     def __getattr__(self, name):
         try:
@@ -45,19 +71,6 @@ class TimerConfig(object):
             self._namespace[key] = value
         else:
             super(TimerConfig, self).__setattr__(key, value)
-
-    @property
-    def bell_sound_name(self):
-        return self._bell_sound_name
-
-    @bell_sound_name.setter
-    def bell_sound_name(self, name):
-        path = os.path.join(
-            KIVY_SOUNDS_PATH,
-            utils.slugify(name) + ".wav"
-        )
-        self.bell_sound = SoundLoader.load(path)
-        self._bell_sound_name = name
 
     @staticmethod
     def fonts(name):

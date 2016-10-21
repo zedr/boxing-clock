@@ -6,4 +6,7 @@
     Label:
         text: "Bell sound"
     Button:
-        text: root.timer.config.bell_sound_name
+        text: root.timer.config.bells.current.name
+        on_press:
+            root.timer.config.bells.rotate()
+            self.text = root.timer.config.bells.current.name

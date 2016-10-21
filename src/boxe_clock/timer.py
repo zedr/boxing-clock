@@ -11,7 +11,7 @@ from boxe_clock.config import TimerConfig
 def _bell_enabled(method):
     def inner(self, widget, value):
         if value == 0:
-            self.config.bell_sound.play()
+            self.config.bells.current.sound.play()
         return method(self, widget, value)
 
     return inner
