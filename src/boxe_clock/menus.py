@@ -6,3 +6,6 @@ class ConfigMenu(GridLayout):
         self.timer = timer
         super(ConfigMenu, self).__init__(**kwargs)
 
+    def say_hello(self):
+        print("Hello")
+

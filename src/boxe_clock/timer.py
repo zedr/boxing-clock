@@ -34,8 +34,8 @@ class TimerButton(Button):
         self.reset()
         Clock.schedule_interval(lambda event: self.update(), 1)
         self.bind(
-            on_touch_down=self._set_hold_event,
-            on_touch_up=self._unset_hold_event,
+            on_press=self._set_hold_event,
+            on_release=self._unset_hold_event,
         )
 
     def _set_hold_event(self, *args):

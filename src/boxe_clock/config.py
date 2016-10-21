@@ -11,9 +11,9 @@ KIVY_TEMPLATES_PATH = os.path.join(KIVY_STATIC_PATH, "templates")
 KIVY_SOUNDS_PATH = os.path.join(KIVY_STATIC_PATH, "sounds")
 KIVY_FONTS_PATH = os.path.join(KIVY_STATIC_PATH, "fonts")
 
-BELL_SOUNDS = ("Digital timer", "Ringside bell")
+TIMER_BELL_SOUNDS = ("Digital timer", "Ringside bell")
 
-DEFAULTS = {
+TIMER_DEFAULTS = {
     "round_duration": 60 * 3,
     "warmup_duration": 10,
     "cooldown_duration": 30,
@@ -23,20 +23,28 @@ DEFAULTS = {
 class TimerConfig(object):
     """A configuration namespace for Timers.
     """
-    available_bell_sound_names = BELL_SOUNDS
+    available_bell_sound_names = TIMER_BELL_SOUNDS
 
     def __init__(self, **kwargs):
-        self.bell_sound_name = self.available_bell_sound_names[0]
         ns = {}
-        ns.update(DEFAULTS)
+        ns.update(TIMER_DEFAULTS)
         ns.update(kwargs)
         self._namespace = ns
+        self.bell_sound_name = self.available_bell_sound_names[0]
 
     def __getattr__(self, name):
         try:
             return self._namespace[name]
         except KeyError:
             raise AttributeError(name)
+
+    def __setattr__(self, key, value):
+        """Only set attributes in the namespace if the key already exists.
+        """
+        if key != "_namespace" and key in self._namespace:
+            self._namespace[key] = value
+        else:
+            super(TimerConfig, self).__setattr__(key, value)
 
     @property
     def bell_sound_name(self):
