@@ -13,26 +13,43 @@ KIVY_FONTS_PATH = os.path.join(KIVY_STATIC_PATH, "fonts")
 
 BELL_SOUNDS = ("Digital timer", "Ringside bell")
 
+DEFAULTS = {
+    "round_duration": 60 * 3,
+    "warmup_duration": 10,
+    "cooldown_duration": 30,
+}
+
 
 class TimerConfig(object):
     """A configuration namespace for Timers.
     """
     available_bell_sound_names = BELL_SOUNDS
 
-    def __init__(self):
-        self.bell_sound = self.available_bell_sound_names[0]
+    def __init__(self, **kwargs):
+        self.bell_sound_name = self.available_bell_sound_names[0]
+        ns = {}
+        ns.update(DEFAULTS)
+        ns.update(kwargs)
+        self._namespace = ns
+
+    def __getattr__(self, name):
+        try:
+            return self._namespace[name]
+        except KeyError:
+            raise AttributeError(name)
 
     @property
-    def bell_sound(self):
-        return self._bell_sound
+    def bell_sound_name(self):
+        return self._bell_sound_name
 
-    @bell_sound.setter
-    def bell_sound(self, name):
+    @bell_sound_name.setter
+    def bell_sound_name(self, name):
         path = os.path.join(
             KIVY_SOUNDS_PATH,
             utils.slugify(name) + ".wav"
         )
-        self._bell_sound = SoundLoader.load(path)
+        self.bell_sound = SoundLoader.load(path)
+        self._bell_sound_name = name
 
     @staticmethod
     def fonts(name):

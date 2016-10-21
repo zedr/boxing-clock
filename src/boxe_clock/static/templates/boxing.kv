@@ -1,9 +1,9 @@
 #:kivy 1.9.1
 
-<ConfigLayout>:
+<ConfigMenu>:
     rows: 4
     cols: 2
     Label:
         text: "Bell sound"
     Button:
-        text: "bla"
+        text: root.timer.config.bell_sound_name

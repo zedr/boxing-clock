@@ -21,9 +21,6 @@ class TimerButton(Button):
     """The main clickable button.
     """
     markup = True
-    default_round_duration = 60 * 3
-    default_warmup_duration = 10
-    default_cooldown_duration = 30
     clock_state = BooleanProperty()
     round_time = NumericProperty()
     warmup_time = NumericProperty()
@@ -52,9 +49,9 @@ class TimerButton(Button):
 
     def _init_time(self, include_warmup=True):
         if include_warmup:
-            self.warmup_time = self.default_warmup_duration
-        self.cooldown_time = self.default_cooldown_duration
-        self.round_time = self.default_round_duration
+            self.warmup_time = self.config.warmup_duration
+        self.cooldown_time = self.config.cooldown_duration
+        self.round_time = self.config.round_duration
 
     def reset(self, vibrate=False):
         if vibrate:
