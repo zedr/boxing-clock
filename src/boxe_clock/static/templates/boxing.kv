@@ -1,8 +1,21 @@
 #:kivy 1.9.1
+#: import format_time boxe_clock.utils.format_time
 
 <ConfigMenu>:
     rows: 4
     cols: 2
+    Label:
+        markup: True
+        font_size: 24
+        text: "Warmup time: " + format_time(int(warmup_slider.value))
+    Slider:
+        id: warmup_slider
+        range: 0, 60
+        step: 5
+        value: 10
+        value_track: True
+        on_value:
+            root.timer.config.warmup_duration = int(self.value)
     Label:
         text: "Bell sound"
     Button:
