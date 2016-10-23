@@ -15,7 +15,7 @@ KIVY_FONTS_PATH = os.path.join(KIVY_STATIC_PATH, "fonts")
 TIMER_DEFAULTS = {
     "round_duration": 60 * 3,
     "warmup_duration": 10,
-    "cooldown_duration": 30,
+    "recovery_duration": 30,
 }
 
 Sound = namedtuple("Sound", ("name", "sound"))

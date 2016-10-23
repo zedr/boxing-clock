@@ -1,11 +1,7 @@
-from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
 
 
-class ConfigMenu(GridLayout):
-    def __init__(self, timer, **kwargs):
-        self.timer = timer
+class ConfigMenu(BoxLayout):
+    def __init__(self, config, **kwargs):
+        self.config = config
         super(ConfigMenu, self).__init__(**kwargs)
-
-    def say_hello(self):
-        print("Hello")
-

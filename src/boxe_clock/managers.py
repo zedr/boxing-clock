@@ -2,6 +2,7 @@ from kivy.uix.carousel import Carousel
 
 from boxe_clock.timer import TimerButton
 from boxe_clock.menus import ConfigMenu
+from boxe_clock.config import TimerConfig
 
 
 class AppManager(Carousel):
@@ -11,7 +12,8 @@ class AppManager(Carousel):
 
     def __init__(self, **kwargs):
         super(AppManager, self).__init__(**kwargs)
-        self.timer_widget = timer = TimerButton()
-        self.config_widget = ConfigMenu(timer=timer)
+        config = TimerConfig()
+        self.config_widget = ConfigMenu(config)
+        self.timer_widget = TimerButton(config)
         self.add_widget(self.timer_widget)
         self.add_widget(self.config_widget)
