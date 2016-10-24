@@ -25,6 +25,7 @@ class TimerButton(Button):
     round_time = NumericProperty()
     warmup_time = NumericProperty()
     recovery_time = NumericProperty()
+    round_number = NumericProperty()
     font_name = TimerConfig.fonts("Digital")
     font_size = 480
 
@@ -32,6 +33,7 @@ class TimerButton(Button):
         super(TimerButton, self).__init__(**kwargs)
         self.config = config
         self.reset()
+        self.round_number = self.config.rounds_number
         Clock.schedule_interval(lambda event: self.update(), 1)
         self.bind(
             on_press=self._set_hold_event,
@@ -80,6 +82,7 @@ class TimerButton(Button):
     def on_clock_state(self, widget, value):
         if value:
             self.background_color = 0, 0, 0, 0
+            actions.dim()
         else:
             self.background_color = 1, 1, 1, 1
 
@@ -92,6 +95,12 @@ class TimerButton(Button):
                 self.warmup_time -= 1
             elif self.round_time:
                 self.round_time -= 1
+                if not self.round_time:
+                    self.round_number -= 1
+                    if not self.round_number:
+                        self.config.bells.current.play()
+                        self.clock_state = States.PAUSED
+                        self.round_number = self.config.rounds_number
             elif self.recovery_time:
                 self.recovery_time -= 1
             else:
