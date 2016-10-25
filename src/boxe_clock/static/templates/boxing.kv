@@ -2,30 +2,123 @@
 #:import LedLabel boxe_clock.labels.LedLabel
 #:import LedButton boxe_clock.buttons.LedButton
 #:import TimerButton boxe_clock.buttons.TimerButton
+#:import format_time boxe_clock.utils.format_time
 
 <RowLayout@BoxLayout>:
     orientation: "vertical"
 
+<Row@BoxLayout>:
+    orientation: "horizontal"
+
+<MenuLabel@Label>:
+    markup: True
+    font_size: 24
+
+<MenuSlider@Slider>:
+    step: 10
+    value_track: True
+
 <AppRoot>:
     direction: "right"
 
-    RowLayout:
-        id: timer
-        padding: -50,-50,-50,-50
-        LedLabel:
-            id: status_label
-            font_size: 80
-            text: "" if timer_button.clock_state else "Paused"
-        TimerButton:
-            id: timer_button
-            markup: True
-            font_size: root.base_font_size
-            on_press:
-                self.toggle()
-        LedLabel:
-            font_size: 160
-            text: timer_button.round_verbose
+    TimerButton:
+        id: timer_button
+        background_color: 0,0,0,1
+        markup: True
+        font_size: root.base_font_size
+        on_press:
+            self.toggle()
+        RowLayout:
+            pos: self.parent.pos
+            size: self.parent.size
+            id: timer
+            padding: -50,-50,-50,-50
+            LedLabel:
+                id: status_label
+                font_size: 80
+                text: timer_button.clock_state_verbose
+            Label:
+            LedLabel:
+                font_size: 160
+                text: timer_button.round_verbose
 
     RowLayout:
-        Label:
-            text: "Config"
+        Row:
+            Label:
+                text: "Configuration"
+                font_size: 40
+        Row:
+            MenuLabel:
+                text: "Round time:"
+                halign: "right"
+                size_hint: 0.5, 1
+            MenuLabel:
+                text: format_time(int(round_slider.value))
+                size_hint: 0.5, 1
+            MenuSlider:
+                id: round_slider
+                range: 30, 600
+                step: 30
+                value: timer_button.config.round_duration
+                size_hint: 1.5, 1
+                on_value:
+                    timer_button.config.round_duration = int(self.value)
+        Row:
+            MenuLabel:
+                text: "Warmup time:"
+                halign: "right"
+                size_hint: 0.5, 1
+            MenuLabel:
+                text: format_time(int(warmup_slider.value))
+                size_hint: 0.5, 1
+            MenuSlider:
+                id: warmup_slider
+                range: 0, 300
+                value: timer_button.config.warmup_duration
+                size_hint: 1.5, 1
+                on_value:
+                    timer_button.config.warmup_duration = int(self.value)
+        Row:
+            MenuLabel:
+                text: "Recovery time:"
+                halign: "right"
+                size_hint: 0.5, 1
+            MenuLabel:
+                text: format_time(int(recovery_slider.value))
+                size_hint: 0.5, 1
+            MenuSlider:
+                id: recovery_slider
+                range: 0, 300
+                step: 10
+                value: timer_button.config.recovery_duration
+                size_hint: 1.5, 1
+                on_value:
+                    timer_button.config.recovery_duration = int(self.value)
+        Row:
+            MenuLabel:
+                text: "Rounds:"
+                halign: "right"
+                size_hint: 0.5, 1
+            MenuLabel:
+                text: str(int(rounds_slider.value))
+                size_hint: 0.5, 1
+            MenuSlider:
+                id: rounds_slider
+                range: 1,32
+                step: 1
+                value: timer_button.config.rounds_max
+                size_hint: 1.5, 1
+                on_value:
+                    timer_button.config.rounds_max = int(self.value)
+        Row:
+            MenuLabel:
+                text: "Bell sound:"
+                halign: "right"
+                size_hint: 0.5, 1
+            Button:
+                size_hint: 1.5, 1
+                font_size: 24
+                text: timer_button.config.bells.current.name
+                on_press:
+                    timer_button.config.bells.rotate()
+                    self.text = timer_button.config.bells.current.name

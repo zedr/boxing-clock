@@ -22,7 +22,7 @@ def _load_current_sound(cls_method):
             return cls_method(self, *args, **kwargs)
         finally:
             name = self[0]
-            path = os.path.join(KIVY_SOUNDS_PATH, utils.slugify(name) + ".wav")
+            path = os.path.join(KIVY_SOUNDS_PATH, utils.slugify(name) + ".mp3")
             self.current = Sound(name, SoundLoader.load(path))
 
     return _inner

@@ -6,3 +6,4 @@ from boxe_clock.mixins import LedMixin
 class LedLabel(LedMixin, Label):
     """A LED label.
     """
+    font_size = 60
