@@ -121,4 +121,5 @@
                 text: timer_button.config.bells.current.name
                 on_press:
                     timer_button.config.bells.rotate()
+                    timer_button.config.bells.current.sound.play()
                     self.text = timer_button.config.bells.current.name
