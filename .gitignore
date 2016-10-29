@@ -61,3 +61,6 @@ bin
 ext
 
 *_results.xml
+
+# Timer config
+timerdb.json

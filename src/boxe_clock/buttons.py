@@ -26,11 +26,11 @@ class TimerButton(LedButton):
     recovery_time = properties.NumericProperty()
     round_number = properties.NumericProperty()
     round_verbose = properties.StringProperty()
-    config = TimerConfig
 
     def __init__(self, **kwargs):
         super(TimerButton, self).__init__(**kwargs)
         self.clock_state = States.PAUSED
+        self.config = TimerConfig()
         self._init_time()
         self.bind(
             on_press=self._set_hold_event,
@@ -49,12 +49,12 @@ class TimerButton(LedButton):
     def _init_time(self, complete=True):
         # Warmup isn't typically used between rounds.
         if complete:
-            self.warmup_time = TimerConfig.warmup_duration
+            self.warmup_time = self.config.warmup_duration
             self.round_number = 1
             self.on_round_number(None, 1)
-        self.recovery_time = TimerConfig.recovery_duration
+        self.recovery_time = self.config.recovery_duration
         # Round time comes last so its duration is displayed on the clock.
-        self.round_time = TimerConfig.round_duration
+        self.round_time = self.config.round_duration
 
     def _start_ticking(self):
         self._update_ticker = Clock.schedule_interval(
