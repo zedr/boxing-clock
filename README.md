@@ -1,4 +1,6 @@
-# Cerebellum
+# Boxing clock
+A simple boxing timer for training routines, designed for mobile
+devices. Right now, only Linux and Android targets are supported.
 
-## Overview
-Cerebellum is a clone of Think!, a puzzle game for the ZX Spectrum.
+## Building
+make android
