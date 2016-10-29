@@ -99,10 +99,26 @@ class TimerButton(LedButton):
             else:
                 self._init_time(complete=False)
 
+    def _start_messaging(self):
+        def _callback(ev):
+            if self.clock_state_verbose == "Paused":
+                self.clock_state_verbose = "Hold to reset"
+            else:
+                self.clock_state_verbose = "Paused"
+
+        _callback(None)
+        self._message_ticker = Clock.schedule_interval(_callback, 1)
+
+    def _stop_messaging(self):
+        Clock.unschedule(self._message_ticker)
+
     def on_clock_state(self, widget, state):
         if state:
+            self._stop_messaging()
             actions.dim()
-        self.clock_state_verbose = "" if state else "Paused"
+            self.clock_state_verbose = ""
+        else:
+            self._start_messaging()
 
     @audio.bell_on_zero
     def on_round_time(self, widget, time):
