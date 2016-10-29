@@ -8,10 +8,11 @@ class BaseBoxingApp(App):
     """The base boxing clock app.
     """
     kv_directory = KIVY_TEMPLATES_PATH
-    base_font_size = 480
+    base_font_factor = 1
+
 
     def build(self):
-        return AppRoot(self.base_font_size)
+        return AppRoot(self.base_font_factor)
 
     def on_start(self):
         pass

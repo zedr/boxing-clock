@@ -1,6 +1,7 @@
 import os
 from collections import deque, namedtuple
 
+from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 
 from boxe_clock import utils
@@ -39,6 +40,18 @@ class SoundDeque(deque):
     @_load_current_sound
     def rotate(self, *args, **kwargs):
         super(SoundDeque, self).rotate(*args, **kwargs)
+
+    def play_current(self, times=1, timeout=0.5):
+        """Play the currently loaded sound a certain amount of times.
+        """
+        if self.current.sound.state != "play":
+            self.current.sound.play()
+            times -= 1
+        if times > 0:
+            Clock.schedule_once(
+                lambda ev: self.play_current(times, timeout),
+                timeout=timeout
+            )
 
 
 class TimerConfig(object):

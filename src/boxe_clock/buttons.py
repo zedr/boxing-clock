@@ -93,6 +93,8 @@ class TimerButton(LedButton):
         else:
             self.round_number += 1
             if self.round_number > self.config.rounds_max:
+                # End of final round: play the bell two more times.
+                self.config.bells.play_current(times=2)
                 self.reset()
             else:
                 self._init_time(complete=False)

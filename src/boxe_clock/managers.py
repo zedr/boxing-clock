@@ -5,8 +5,8 @@ from boxe_clock.config import TimerConfig
 
 
 class AppRoot(Carousel):
-    def __init__(self, base_font_size, **kwargs):
-        self.base_font_size = base_font_size
+    def __init__(self, base_font_factor, **kwargs):
+        self.bff = base_font_factor
         self.timer_config = TimerConfig()
         super(AppRoot, self).__init__(**kwargs)
 
