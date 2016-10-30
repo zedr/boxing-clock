@@ -64,3 +64,6 @@ ext
 
 # Timer config
 timerdb.json
+
+# Rope
+.ropeproject

@@ -15,7 +15,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='boxe_clock',
-    version='1.0.0',
+    version='0.9.9',
 
     description='A simple boxing timer for mobile devices',
     long_description=long_description,
