@@ -3,6 +3,7 @@
 #:import LedButton boxe_clock.buttons.LedButton
 #:import TimerButton boxe_clock.buttons.TimerButton
 #:import format_time boxe_clock.utils.format_time
+#:import Gradient boxe_clock.gradients.Gradient
 
 <RowLayout@BoxLayout>:
     orientation: "vertical"
@@ -20,6 +21,11 @@
 
 <AppRoot>:
     direction: "right"
+    canvas:
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            texture: Gradient.vertical((0, 0, 0, 1), (0.1, 0.1, 0.1, 1))
 
     TimerButton:
         id: timer_button
