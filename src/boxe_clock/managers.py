@@ -1,24 +1,16 @@
 from kivy.uix.carousel import Carousel
 
-from boxe_clock.menus import ConfigMenu
 from boxe_clock.config import TimerConfig
 
 
 class AppRoot(Carousel):
-    def __init__(self, base_font_factor, **kwargs):
-        self.bff = base_font_factor
-        self.timer_config = TimerConfig()
-        super(AppRoot, self).__init__(**kwargs)
+    """The App root widget.
 
-
-class AppManager(Carousel):
-    """The manager for the various screens used by the app.
+    This is a Carousel that alternates between the timer and the configuration
+    screen.
     """
     direction = "right"
 
     def __init__(self, **kwargs):
-        super(AppManager, self).__init__(**kwargs)
-        config = TimerConfig()
-        self.config_widget = ConfigMenu(config)
-        self.add_widget(self.timer_widget)
-        self.add_widget(self.config_widget)
+        self.timer_config = TimerConfig()
+        super(AppRoot, self).__init__(**kwargs)

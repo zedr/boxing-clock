@@ -12,6 +12,7 @@
 
 <MenuLabel@Label>:
     markup: True
+    font_size: "16dp"
 
 <MenuSlider@Slider>:
     step: 10
@@ -24,7 +25,7 @@
         id: timer_button
         background_color: 0,0,0,1
         markup: True
-        font_size: root.bff * 480
+        font_size: "224dp"
         on_press:
             self.toggle()
         RowLayout:
@@ -34,35 +35,32 @@
             padding: -50,-50,-50,-50
             LedLabel:
                 id: status_label
-                font_size: root.bff * 96
                 text: timer_button.clock_state_verbose
+                font_size: "56dp"
             Label:
             LedLabel:
-                font_size: root.bff * 192
+                font_size: "104dp"
                 text: timer_button.round_verbose
 
     RowLayout:
         Row:
             Label:
                 text: "Configuration"
-                font_size: root.bff * 64
+                font_size: "40dp"
         Row:
             MenuLabel:
                 text: "Round time:"
                 halign: "right"
                 size_hint: 0.75, 1
-                font_size: root.bff * 32
             MenuLabel:
                 text: format_time(int(round_slider.value))
                 size_hint: 0.25, 1
-                font_size: root.bff * 32
             MenuSlider:
                 id: round_slider
                 range: 30, 540
                 step: 30
                 value: timer_button.config.round_duration
                 size_hint: 1.5, 1
-                font_size: root.bff * 32
                 on_value:
                     timer_button.config.round_duration = int(self.value)
         Row:
@@ -70,11 +68,9 @@
                 text: "Warmup time:"
                 halign: "right"
                 size_hint: 0.75, 1
-                font_size: root.bff * 32
             MenuLabel:
                 text: format_time(int(warmup_slider.value))
                 size_hint: 0.25, 1
-                font_size: root.bff * 32
             MenuSlider:
                 id: warmup_slider
                 range: 0, 300
@@ -87,11 +83,9 @@
                 text: "Recovery time:"
                 halign: "right"
                 size_hint: 0.75, 1
-                font_size: root.bff * 32
             MenuLabel:
                 text: format_time(int(recovery_slider.value))
                 size_hint: 0.25, 1
-                font_size: root.bff * 32
             MenuSlider:
                 id: recovery_slider
                 range: 0, 300
@@ -105,11 +99,9 @@
                 text: "Rounds:"
                 halign: "right"
                 size_hint: 0.75, 1
-                font_size: root.bff * 32
             MenuLabel:
                 text: str(int(rounds_slider.value))
                 size_hint: 0.25, 1
-                font_size: root.bff * 32
             MenuSlider:
                 id: rounds_slider
                 range: 1,32
@@ -123,10 +115,8 @@
                 text: "Bell sound:"
                 halign: "right"
                 size_hint: 0.75, 1
-                font_size: root.bff * 32
             Button:
                 size_hint: 1.75, 1
-                font_size: root.bff * 32
                 text: timer_button.config.bells.current.name
                 on_press:
                     timer_button.config.bells.rotate()

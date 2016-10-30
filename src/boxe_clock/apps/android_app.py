@@ -8,7 +8,6 @@ from boxe_clock.platform.android import actions
 class BoxingApp(BaseBoxingApp):
     """The boxing app for Android devices.
     """
-    base_font_factor = 1.4
 
     def on_start(self):
         super(BoxingApp, self).on_start()
