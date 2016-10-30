@@ -83,20 +83,30 @@ class TimerButton(LedButton):
         else:
             self._stop_ticking()
 
+    @property
+    def is_at_final_round(self):
+        """Is the timer at its final round?
+        """
+        return self.round_number >= self.config.rounds_max
+
     def update(self):
+        """Run an update cycle.
+        """
         if self.warmup_time:
             self.warmup_time -= 1
         elif self.round_time:
             self.round_time -= 1
+            if not self.round_time and self.is_at_final_round:
+                # End of final round: play the bell two more times.
+                self.config.bells.play_current(times=2)
         elif self.recovery_time:
             self.recovery_time -= 1
         else:
-            self.round_number += 1
-            if self.round_number > self.config.rounds_max:
-                # End of final round: play the bell two more times.
-                self.config.bells.play_current(times=2)
+            if self.is_at_final_round:
+                # End of training routine.
                 self.reset()
             else:
+                self.round_number += 1
                 self._init_time(complete=False)
 
     def _start_messaging(self):
