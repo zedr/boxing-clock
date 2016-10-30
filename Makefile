@@ -31,6 +31,9 @@ app: env
 android: env
 	${virtualenv} buildozer -v android debug deploy run
 
+android-release: env
+	${virtualenv} buildozer -v android release deploy run
+
 lint:
 	@${virtualenv} flake8 src
 
