@@ -28,7 +28,7 @@ source.include_patterns = boxe_clock/static/images/*/*.*,boxe_clock/static/sound
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 1.0.2
+version = 1.0.3
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]

@@ -1,7 +1,7 @@
 from kivy.app import App
 
 from boxe_clock.managers import AppRoot
-from boxe_clock.config import KIVY_TEMPLATES_PATH
+from boxe_clock.constants import KIVY_TEMPLATES_PATH
 
 
 class BaseBoxingApp(App):
